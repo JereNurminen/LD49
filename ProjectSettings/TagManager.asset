@@ -50,6 +50,9 @@ TagManager:
   - name: Player
     uniqueID: 3998970047
     locked: 0
+  - name: Spells
+    uniqueID: 852651685
+    locked: 0
   - name: TargetingUI
     uniqueID: 665414457
     locked: 0

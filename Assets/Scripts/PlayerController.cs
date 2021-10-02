@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public Camera mainCamera;
 
     public float moveSpeed;
+    public List<GameObject> spells;
 
     public Vector2 wandTipOnSprite;
     public int rayCount;
@@ -44,10 +45,18 @@ public class PlayerController : MonoBehaviour
         movementInput = value.Get<Vector2>();
     }
 
+    void CastNextSpell()
+    {
+        GameObject nextSpell = spells[Random.Range(0, spells.Count)];
+        GameObject newSpell = Instantiate(nextSpell, wandTipPosition, Quaternion.identity);
+        newSpell.GetComponent<IProjectileSpell>().target = mousePos;
+    }
+
     public void OnFire(InputValue value)
     {
         Debug.Log(mousePos);
         Debug.DrawLine(wandTipPosition, mousePos, Color.red, 1f);
+        CastNextSpell();
     }
 
     // TODO: Find out why all the magic numbers work 
