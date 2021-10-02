@@ -6,6 +6,7 @@ public class Fireball : MonoBehaviour, IProjectileSpell
 {
     public Vector2 target { get; set; }
     public LayerMask layers;
+    public int damage;
 
     [SerializeField]
     private float _speed;
@@ -13,6 +14,7 @@ public class Fireball : MonoBehaviour, IProjectileSpell
 
     Vector2 direction;
     Animator animator;
+    bool disabled = false;
 
     // Start is called before the first frame update
     void Start()
@@ -21,10 +23,15 @@ public class Fireball : MonoBehaviour, IProjectileSpell
         animator = gameObject.GetComponent<Animator>();
     }
 
-    public void Hit()
+    public void Hit(GameObject hitTarget)
     {
         direction = Vector2.zero;
         animator.SetTrigger("Hit");
+        Health health = hitTarget.GetComponent<Health>();
+        if (health != null) {
+            health.TakeDamage(damage);
+        }
+        disabled = true;
     }
 
     public void CheckForHit(Vector2 newPos) {
@@ -38,13 +45,15 @@ public class Fireball : MonoBehaviour, IProjectileSpell
 
     public void Move()
     {
-        Vector2 newPos = (Vector2)transform.position + direction * speed * Time.deltaTime;
-        RaycastHit2D hit = Physics2D.Linecast(transform.position, newPos, layers);
-        if (hit.collider != null) {
-            newPos = hit.point;
-            Hit();
+        if (!disabled) {
+            Vector2 newPos = (Vector2)transform.position + direction * speed * Time.deltaTime;
+            RaycastHit2D hit = Physics2D.Linecast(transform.position, newPos, layers);
+            if (hit.collider != null) {
+                newPos = hit.point;
+                Hit(hit.collider.gameObject);
+            }
+            transform.position = newPos;
         }
-        transform.position = newPos;
     }
 
     public void AnimationDone() {

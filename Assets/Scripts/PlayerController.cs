@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
-        Debug.Log(value.Get<Vector2>());
         movementInput = value.Get<Vector2>();
     }
 
@@ -54,7 +53,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnFire(InputValue value)
     {
-        Debug.Log(mousePos);
         Debug.DrawLine(wandTipPosition, mousePos, Color.red, 1f);
         CastNextSpell();
     }
@@ -96,7 +94,6 @@ public class PlayerController : MonoBehaviour
         }
 
         if (horHits.Count > 0) {
-            Debug.Log("h hit");
             Vector2 horHitPos = horHits[0].point;
             newPos.x = horHitPos.x < transform.position.x
                 ? horHitPos.x + boxCollider.bounds.extents.x
@@ -133,7 +130,6 @@ public class PlayerController : MonoBehaviour
         }
         
         if (verHits.Count > 0) {
-            Debug.Log("v hit");
             Vector2 verHitPos = verHits[0].point;
             newPos.y = verHitPos.y < transform.position.y
                 ? verHitPos.y + boxCollider.bounds.extents.y + 3

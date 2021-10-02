@@ -41,6 +41,11 @@ public class Goblin : MonoBehaviour
         InvokeRepeating("CheckSightToPlayer", 1f, .25f);
     }
 
+    public void Die() {
+        Debug.Log("DIE called");
+        GameObject.Destroy(gameObject);
+    }
+
     void CheckSightToPlayer()
     {
         RaycastHit2D hit = Physics2D.Linecast(transform.position, player.transform.position, layersThatBlockVision);

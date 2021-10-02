@@ -8,7 +8,7 @@ public interface IProjectileSpell
     public Vector2 target { get; set; }
     public float speed { get; set; } 
 
-    void Hit();
+    void Hit(GameObject hitTarget);
     void Kill();
     void Move();
     void CheckForHit(Vector2 newPos);
