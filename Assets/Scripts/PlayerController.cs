@@ -17,11 +17,14 @@ public class PlayerController : MonoBehaviour
     private Vector2 wandTipPosition;
     private BoxCollider2D boxCollider;
     private Vector2 movementInput;
+    private LineRenderer targetingLine;
 
     // Start is called before the first frame update
     void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
+        targetingLine = GetComponentInChildren<LineRenderer>();
+        Cursor.visible = false;
     }
 
     public void OnDrawGizmos() {
@@ -140,5 +143,7 @@ public class PlayerController : MonoBehaviour
     {
         mousePos = mainCamera.ScreenToWorldPoint((Vector2)Mouse.current.position.ReadValue());
         wandTipPosition = (Vector2)transform.position + wandTipOnSprite;
+        Vector3[] linePoints = new Vector3[] { wandTipPosition, mousePos };
+        targetingLine.SetPositions(linePoints);
     }
 }
