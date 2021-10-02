@@ -18,7 +18,8 @@ static class Utils
         LayerMask layers,
         Axis axis,
         Color color,
-        float duration = 0
+        float duration = 0,
+        bool debug = false
     )
     {
         List<RaycastHit2D> none = new List<RaycastHit2D>();
@@ -39,8 +40,10 @@ static class Utils
                 );
             var lineEnd = lineStart + direction * length;
 
-            Debug.DrawLine(start, end, Color.white, duration);
-            Debug.DrawLine(lineStart, lineEnd, color, duration); 
+            if (debug == true) {
+                Debug.DrawLine(start, end, Color.white, duration);
+                Debug.DrawLine(lineStart, lineEnd, color, duration); 
+            }
             RaycastHit2D hit = Physics2D.Linecast(lineStart, lineEnd, layers.value);
 
             if (hit.collider != null) {
