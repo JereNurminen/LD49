@@ -16,15 +16,21 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 mousePos;
     private Vector2 wandTipPosition;
+    private GameObject wandTip;
     private BoxCollider2D boxCollider;
     private Vector2 movementInput;
     private LineRenderer targetingLine;
+    private Animator animator;
+    private Vector2 lastPos;
 
     // Start is called before the first frame update
     void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
         targetingLine = GetComponentInChildren<LineRenderer>();
+        animator = GetComponent<Animator>();
+        wandTip = transform.Find("WandTip").gameObject;
+        wandTipPosition = wandTip.transform.position;
         Cursor.visible = false;
     }
 
@@ -40,7 +46,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public void Die() {
-        gameObject.SetActive(false);
+        animator.SetTrigger("Death");
     }
 
     public void OnMove(InputValue value)
@@ -62,14 +68,29 @@ public class PlayerController : MonoBehaviour
     }
 
     void FixedUpdate() {
+        lastPos = transform.position;
         Utils.Move(gameObject, moveSpeed, wallLayers, movementInput);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if ( lastPos != (Vector2)transform.position ) {
+            animator.SetBool("Walking", true);
+        } else {
+            animator.SetBool("Walking", false);
+        }
+
         mousePos = mainCamera.ScreenToWorldPoint((Vector2)Mouse.current.position.ReadValue());
-        wandTipPosition = (Vector2)transform.position + wandTipOnSprite;
+
+        if ( mousePos.x < transform.position.x) {
+             transform.localScale = new Vector2(-1, 1); 
+             wandTipPosition.x = transform.position.x - wandTipOnSprite.x;
+        } else {
+             transform.localScale = new Vector2(1, 1); 
+             wandTipPosition.x = transform.position.x + wandTipOnSprite.x;
+        }
+        wandTipPosition.y = transform.position.y + wandTipOnSprite.y;
         Vector3[] linePoints = new Vector3[] { wandTipPosition, mousePos };
         targetingLine.SetPositions(linePoints);
     }

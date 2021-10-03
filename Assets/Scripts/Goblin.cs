@@ -20,6 +20,10 @@ public class Goblin : MonoBehaviour
     private GameObject player;
     private Melee melee;
     private List<RaycastHit2D> lastFrameHits = new List<RaycastHit2D>();
+    private Vector2 lastPos;
+    private Animator animator;
+
+    private bool alive = true;
 
     public void OnDrawGizmos() {
         #if UNITY_EDITOR
@@ -46,11 +50,13 @@ public class Goblin : MonoBehaviour
         patrolEndPos = (Vector2)transform.position + patrolEndPos;
         player = GameObject.FindWithTag("Player");
         melee = GetComponentInChildren<Melee>();
+        animator = GetComponent<Animator>();
         InvokeRepeating("CheckSightToPlayer", 1f, .25f);
     }
 
     public void Die() {
-        GameObject.Destroy(gameObject);
+        alive = false;
+        animator.SetTrigger("Death");
     }
 
     void CheckSightToPlayer()
@@ -89,12 +95,33 @@ public class Goblin : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if ( hasSeenPlayer ) {
-            CheckSightToPlayer();
+        if (alive) { 
+            if ( hasSeenPlayer ) {
+                CheckSightToPlayer();
+            }
+            Move();
+            if (Vector2.Distance(transform.position, player.transform.position) <= melee.meleeRange) {
+                melee.Swing(player.transform.position);
+            }
+            
+            if ( lastPos.x < transform.position.x) {
+                transform.localScale = new Vector2(1, 1); 
+            } else {
+                transform.localScale = new Vector2(-1, 1); 
+            }
+
+            lastPos = transform.position;
         }
-        Move();
-        if (Vector2.Distance(transform.position, player.transform.position) <= melee.meleeRange) {
-            melee.Swing(player.transform.position);
+    }
+
+    void Update()
+    {
+        if (alive) {
+            if ( lastPos != (Vector2)transform.position ) {
+                animator.SetBool("Walking", true);
+            } else {
+                animator.SetBool("Walking", false);
+            }
         }
     }
 }
