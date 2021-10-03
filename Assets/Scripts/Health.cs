@@ -21,7 +21,6 @@ public class Health : MonoBehaviour
     {
         currentHealth -= damage;
         if (currentHealth <= 0) {
-            Debug.Log("Dead :(");
             OnHealthZero.Invoke();
         }
     }
