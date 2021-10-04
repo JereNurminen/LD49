@@ -40,11 +40,15 @@ public class PlayerController : MonoBehaviour
     private bool movementDisabled = false;
     public bool dead = false;
 
+    AudioSource audioSource;
+    public AudioClip dieSound;
+
     // Start is called before the first frame update
     void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
         targetingLine = GetComponentInChildren<LineRenderer>();
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         health = GetComponent<Health>();
         uiManager = GameObject.FindWithTag("UI").GetComponent<UIManager>();
@@ -60,6 +64,7 @@ public class PlayerController : MonoBehaviour
         dead = true;
         uiManager.GameOver();
         hudManager.SetHP(health);
+        audioSource.PlayOneShot(dieSound, 1f);
     }
 
     public void OnMove(InputValue value)

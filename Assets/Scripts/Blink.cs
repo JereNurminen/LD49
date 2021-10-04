@@ -16,11 +16,16 @@ public class Blink : MonoBehaviour, IProjectileSpell
     Vector2 direction;
     bool disabled = false;
 
+    AudioSource audioSource;
+    public AudioClip castSound;
+
     // Start is called before the first frame update
     void Start()
     {
         direction = (target - (Vector2)transform.position).normalized;
         caster.TeleportOut();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(castSound, 1);
     }
 
     public void Hit(GameObject hitTarget)

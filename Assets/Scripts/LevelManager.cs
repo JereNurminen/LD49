@@ -11,6 +11,9 @@ public class LevelManager : MonoBehaviour
     int openLayer;
     public bool isOpen = false;
 
+    AudioSource audioSource;
+    public AudioClip openSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,7 @@ public class LevelManager : MonoBehaviour
         }
 
         InvokeRepeating("CheckGoblins", 1f, 1f);
+        audioSource = GetComponent<AudioSource>();
     }
 
     IEnumerator FinishGame()
@@ -60,6 +64,7 @@ public class LevelManager : MonoBehaviour
         }
 
         animator.SetBool("Open", true);
+        audioSource.PlayOneShot(openSound, 1);
         CancelInvoke();
     }
 

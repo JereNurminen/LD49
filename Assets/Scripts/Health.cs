@@ -10,11 +10,14 @@ public class Health : MonoBehaviour
     public int currentHealth;
     public UnityEvent OnHealthZero;
     
+    AudioSource audioSource;
+    public AudioClip hurtSound;
 
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = startingHealth;
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void TakeDamage(int damage)
@@ -23,6 +26,7 @@ public class Health : MonoBehaviour
         if (currentHealth <= 0) {
             OnHealthZero.Invoke();
         }
+        audioSource.PlayOneShot(hurtSound, 1f);
     }
 
     public void Heal(int amount)

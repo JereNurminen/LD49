@@ -32,6 +32,9 @@ public class Goblin : MonoBehaviour
     public bool alive = true;
     public bool polymorphed;
 
+    AudioSource audioSource;
+    public AudioClip dieSound;
+
     public void OnDrawGizmos() {
         #if UNITY_EDITOR
         Utils.DrawCrossOnPoint(
@@ -59,6 +62,7 @@ public class Goblin : MonoBehaviour
         melee = GetComponentInChildren<Melee>();
         animator = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
+        audioSource = GetComponent<AudioSource>();
         InvokeRepeating("CheckSightToPlayer", 1f, .25f);
     }
 
@@ -88,6 +92,7 @@ public class Goblin : MonoBehaviour
         alive = false;
         animator.SetTrigger("Death");
         boxCollider.enabled = false;
+        audioSource.PlayOneShot(dieSound, 1f);
         CancelInvoke();
     }
 

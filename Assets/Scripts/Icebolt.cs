@@ -26,15 +26,22 @@ public class Icebolt : MonoBehaviour, IProjectileSpell
     Animator animator;
     bool disabled = false;
 
+    AudioSource audioSource;
+    public AudioClip castSound;
+    public AudioClip hitSound;
+
     // Start is called before the first frame update
     void Start()
     {
         direction = (_target - (Vector2)transform.position).normalized;
         animator = gameObject.GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(castSound, 1);
     }
 
     public void Hit(GameObject hitTarget)
     {
+        audioSource.PlayOneShot(hitSound, 1);
         direction = Vector2.zero;
         animator.SetTrigger("Hit");
         Health health = hitTarget.GetComponent<Health>();
