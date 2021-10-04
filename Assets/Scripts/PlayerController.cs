@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 mousePos;
     private Vector2 wandTipPosition;
-    private GameObject wandTip;
     private BoxCollider2D boxCollider;
     private Vector2 movementInput;
     private LineRenderer targetingLine;
@@ -29,8 +28,6 @@ public class PlayerController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         targetingLine = GetComponentInChildren<LineRenderer>();
         animator = GetComponent<Animator>();
-        wandTip = transform.Find("WandTip").gameObject;
-        wandTipPosition = wandTip.transform.position;
         Cursor.visible = false;
     }
 

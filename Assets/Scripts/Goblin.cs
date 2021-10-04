@@ -22,6 +22,7 @@ public class Goblin : MonoBehaviour
     private List<RaycastHit2D> lastFrameHits = new List<RaycastHit2D>();
     private Vector2 lastPos;
     private Animator animator;
+    private bool frozen;
 
     private bool alive = true;
 
@@ -54,6 +55,22 @@ public class Goblin : MonoBehaviour
         InvokeRepeating("CheckSightToPlayer", 1f, .25f);
     }
 
+    void UnFreeze() {
+        frozen = false;
+        animator.SetBool("Frozen", false);
+    }
+
+    IEnumerator UnFreezeCoroutine(float duration) {
+        yield return new WaitForSeconds(duration);
+        UnFreeze();
+    }
+
+    public void Freeze(float duration) {
+        frozen = true;
+        animator.SetBool("Frozen", true);
+        StartCoroutine(UnFreezeCoroutine(duration));
+    }
+
     public void Die() {
         alive = false;
         animator.SetTrigger("Death");
@@ -61,17 +78,19 @@ public class Goblin : MonoBehaviour
 
     void CheckSightToPlayer()
     {
-        RaycastHit2D hit = Physics2D.Linecast(transform.position, player.transform.position, layersThatBlockVision);
-        Debug.DrawLine(transform.position, player.transform.position, Color.green, .25f);
+        if (alive && !frozen) {
+            RaycastHit2D hit = Physics2D.Linecast(transform.position, player.transform.position, layersThatBlockVision);
+            Debug.DrawLine(transform.position, player.transform.position, Color.green, .25f);
 
-        if (hit.collider.gameObject.tag == "Player") {
-            hasSeenPlayer = true;
-            seesPlayer = true;
-            lastSeenPlayerPos = hit.point;
-            moveTarget = lastSeenPlayerPos;
-            isPatrolling = false;
-        } else {
-            seesPlayer = false;
+            if (hit.collider.gameObject.tag == "Player") {
+                hasSeenPlayer = true;
+                seesPlayer = true;
+                lastSeenPlayerPos = hit.point;
+                moveTarget = lastSeenPlayerPos;
+                isPatrolling = false;
+            } else {
+                seesPlayer = false;
+            }
         }
     }
 
@@ -95,7 +114,7 @@ public class Goblin : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (alive) { 
+        if (alive && !frozen) { 
             animator.SetBool("Walking", true);
             if ( hasSeenPlayer ) {
                 CheckSightToPlayer();
