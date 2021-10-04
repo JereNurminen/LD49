@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8402130777040530013}
   m_Layer: 8
   m_Name: Goblin
-  m_TagString: Untagged
+  m_TagString: Goblin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 32
-  runSpeed: 72
+  runSpeed: 48
   patrolStartPos: {x: 0, y: 0}
   patrolEndPos: {x: 160, y: 0}
   layersThatBlockVision:
@@ -137,6 +137,8 @@ MonoBehaviour:
     m_Bits: 64
   polymorphSpeed: 0
   polymorphHealth: 0
+  alive: 1
+  polymorphed: 0
 --- !u!114 &8402130777040530012
 MonoBehaviour:
   m_ObjectHideFlags: 0

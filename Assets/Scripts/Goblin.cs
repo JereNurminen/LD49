@@ -28,9 +28,9 @@ public class Goblin : MonoBehaviour
     private Health health;
     private BoxCollider2D boxCollider;
     private bool frozen;
-    private bool polymorphed;
 
-    private bool alive = true;
+    public bool alive = true;
+    public bool polymorphed;
 
     public void OnDrawGizmos() {
         #if UNITY_EDITOR
@@ -88,6 +88,7 @@ public class Goblin : MonoBehaviour
         alive = false;
         animator.SetTrigger("Death");
         boxCollider.enabled = false;
+        CancelInvoke();
     }
 
     void CheckSightToPlayer()
