@@ -135,6 +135,8 @@ MonoBehaviour:
   wallLayers:
     serializedVersion: 2
     m_Bits: 64
+  polymorphSpeed: 0
+  polymorphHealth: 0
 --- !u!114 &8402130777040530012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,8 +149,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c583a8b2df2df64c943d1be0e8aa3bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
-  startingHealth: 5
+  maxHealth: 6
+  startingHealth: 6
+  currentHealth: 0
   OnHealthZero:
     m_PersistentCalls:
       m_Calls:
@@ -294,7 +297,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 852651685
-  m_SortingLayer: 5
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: -922421159486631208, guid: b6691383c9e24bf4da3549c53bf932e7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

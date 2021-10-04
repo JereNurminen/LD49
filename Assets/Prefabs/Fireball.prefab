@@ -120,7 +120,7 @@ MonoBehaviour:
   layers:
     serializedVersion: 2
     m_Bits: 832
-  damage: 3
+  damage: 2
   _speed: 64
 --- !u!50 &6007463172329883013
 Rigidbody2D:

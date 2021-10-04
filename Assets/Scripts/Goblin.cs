@@ -25,6 +25,8 @@ public class Goblin : MonoBehaviour
     private List<RaycastHit2D> lastFrameHits = new List<RaycastHit2D>();
     private Vector2 lastPos;
     private Animator animator;
+    private Health health;
+    private BoxCollider2D boxCollider;
     private bool frozen;
     private bool polymorphed;
 
@@ -53,14 +55,17 @@ public class Goblin : MonoBehaviour
         patrolEndPos = (Vector2)transform.position + patrolEndPos;
         player = GameObject.FindWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
+        health = GetComponent<Health>();
         melee = GetComponentInChildren<Melee>();
         animator = GetComponent<Animator>();
+        boxCollider = GetComponent<BoxCollider2D>();
         InvokeRepeating("CheckSightToPlayer", 1f, .25f);
     }
 
     public void Polymorph() {
         polymorphed = true;
         animator.SetBool("Polymorphed", true);
+        health.currentHealth = 2;
     }
 
     void UnFreeze() {
@@ -82,6 +87,7 @@ public class Goblin : MonoBehaviour
     public void Die() {
         alive = false;
         animator.SetTrigger("Death");
+        boxCollider.enabled = false;
     }
 
     void CheckSightToPlayer()
