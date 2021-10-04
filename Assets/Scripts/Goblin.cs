@@ -96,6 +96,7 @@ public class Goblin : MonoBehaviour
     void FixedUpdate()
     {
         if (alive) { 
+            animator.SetBool("Walking", true);
             if ( hasSeenPlayer ) {
                 CheckSightToPlayer();
             }
@@ -116,12 +117,5 @@ public class Goblin : MonoBehaviour
 
     void Update()
     {
-        if (alive) {
-            if ( lastPos != (Vector2)transform.position ) {
-                animator.SetBool("Walking", true);
-            } else {
-                animator.SetBool("Walking", false);
-            }
-        }
     }
 }
