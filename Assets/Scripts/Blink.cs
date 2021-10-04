@@ -2,47 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Icebolt : MonoBehaviour, IProjectileSpell
+public class Blink : MonoBehaviour, IProjectileSpell
 {
-    private Vector2 _target;
-    public Vector2 target {
-        get { return _target; }
-        set {
-            _target = value;
-            direction = (_target - (Vector2)transform.position).normalized;
-        }
-    }
+    public Vector2 target { get; set; }
+    public PlayerController caster { get; set; }
     public LayerMask layers;
     public int damage;
-    public float freezeDuration;
 
     [SerializeField]
     private float _speed;
     public float speed { get { return _speed; } set { _speed = value; } }
 
     Vector2 direction;
-    Animator animator;
     bool disabled = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        direction = (_target - (Vector2)transform.position).normalized;
-        animator = gameObject.GetComponent<Animator>();
+        direction = (target - (Vector2)transform.position).normalized;
+        caster.TeleportOut();
     }
 
     public void Hit(GameObject hitTarget)
     {
+        disabled = true;
         direction = Vector2.zero;
-        animator.SetTrigger("Hit");
-        Health health = hitTarget.GetComponent<Health>();
-        Goblin goblin = hitTarget.GetComponent<Goblin>();
-        if (health != null) {
-            health.TakeDamage(damage);
-        }
-        if (goblin) {
-            goblin.Freeze(freezeDuration);
-        }
+        caster.TeleportIn();
+        Kill();
     }
 
     public void CheckForHit(Vector2 newPos) {
@@ -57,13 +43,19 @@ public class Icebolt : MonoBehaviour, IProjectileSpell
     public void Move()
     {
         if (!disabled) {
-            Vector2 newPos = (Vector2)transform.position + direction * speed * Time.deltaTime;
-            RaycastHit2D hit = Physics2D.Linecast(transform.position, newPos, layers);
+            Vector2 oldPos = transform.position;
+            Vector2 newPos = (Vector2)oldPos + direction * speed * Time.deltaTime;
+            RaycastHit2D hit = Physics2D.Linecast(oldPos, newPos, layers);
+            float distanceToTarget = Vector2.Distance(target, newPos);
             if (hit.collider != null) {
-                newPos = hit.point;
+                newPos = oldPos;
                 Hit(hit.collider.gameObject);
+            } else if (distanceToTarget <= 8 ) {
+                newPos = oldPos;
+                Hit(gameObject);
             }
             transform.position = newPos;
+            caster.transform.position = transform.position;
         }
     }
 

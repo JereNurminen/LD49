@@ -1,3 +1,4 @@
+#nullable enable
 using UnityEngine;
 using System.Collections;
 
@@ -7,6 +8,7 @@ public interface IProjectileSpell
 {
     public Vector2 target { get; set; }
     public float speed { get; set; } 
+    public PlayerController caster { get; set; }
 
     void Hit(GameObject hitTarget);
     void Kill();

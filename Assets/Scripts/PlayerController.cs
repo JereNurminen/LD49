@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     public float moveSpeed;
     public List<GameObject> spells;
+    public List<GameObject> debugSpells;
 
     public Vector2 wandTipOnSprite;
     public int rayCount;
@@ -22,6 +23,12 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Vector2 lastPos;
 
+    public bool visible = true;
+    public bool invulnerable = false;
+    private bool castingDisabled = false;
+    private bool movementDisabled = false;
+    public bool dead = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,19 +38,10 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
     }
 
-    public void OnDrawGizmos() {
-        #if UNITY_EDITOR
-        Utils.DrawCrossOnPoint(
-            (Vector2)transform.position + wandTipOnSprite,
-            1,
-            Color.red,
-            0.25f
-            );
-        #endif
-    }
-
     public void Die() {
         animator.SetTrigger("Death");
+        targetingLine.enabled = false;
+        dead = true;
     }
 
     public void OnMove(InputValue value)
@@ -51,16 +49,41 @@ public class PlayerController : MonoBehaviour
         movementInput = value.Get<Vector2>();
     }
 
+    public void TeleportOut()
+    {
+        animator.SetTrigger("Teleport Out");
+        movementDisabled = true;
+        invulnerable = true;
+        visible = false;
+        castingDisabled = true;
+        targetingLine.enabled = false;
+    }
+
+    public void TeleportIn()
+    {
+        animator.SetTrigger("Teleport In");
+        movementDisabled = false;
+        invulnerable = false;
+        visible = true;
+        castingDisabled = false;
+        targetingLine.enabled = true;
+    }
+
     void CastNextSpell()
     {
-        GameObject nextSpell = spells[Random.Range(0, spells.Count)];
-        GameObject newSpell = Instantiate(nextSpell, wandTipPosition, Quaternion.identity);
-        newSpell.GetComponent<IProjectileSpell>().target = mousePos;
+        if (!castingDisabled) {
+            GameObject nextSpell = debugSpells.Count > 0
+                ? debugSpells[0]
+                : spells[Random.Range(0, spells.Count)];
+            GameObject newSpell = Instantiate(nextSpell, wandTipPosition, Quaternion.identity);
+            Debug.Log($"next spell: {nextSpell.gameObject.name}");
+            newSpell.GetComponent<IProjectileSpell>().target = mousePos;
+            newSpell.GetComponent<IProjectileSpell>().caster = this;
+        }
     }
 
     public void OnFire(InputValue value)
     {
-        Debug.DrawLine(wandTipPosition, mousePos, Color.red, 1f);
         CastNextSpell();
     }
 
@@ -72,23 +95,25 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ( lastPos != (Vector2)transform.position ) {
-            animator.SetBool("Walking", true);
-        } else {
-            animator.SetBool("Walking", false);
-        }
+        if (!dead) {
+            if ( lastPos != (Vector2)transform.position ) {
+                animator.SetBool("Walking", true);
+            } else {
+                animator.SetBool("Walking", false);
+            }
 
-        mousePos = mainCamera.ScreenToWorldPoint((Vector2)Mouse.current.position.ReadValue());
+            mousePos = mainCamera.ScreenToWorldPoint((Vector2)Mouse.current.position.ReadValue());
 
-        if ( mousePos.x < transform.position.x) {
-             transform.localScale = new Vector2(-1, 1); 
-             wandTipPosition.x = transform.position.x - wandTipOnSprite.x;
-        } else {
-             transform.localScale = new Vector2(1, 1); 
-             wandTipPosition.x = transform.position.x + wandTipOnSprite.x;
+            if ( mousePos.x < transform.position.x) {
+                transform.localScale = new Vector2(-1, 1); 
+                wandTipPosition.x = transform.position.x - wandTipOnSprite.x;
+            } else {
+                transform.localScale = new Vector2(1, 1); 
+                wandTipPosition.x = transform.position.x + wandTipOnSprite.x;
+            }
+            wandTipPosition.y = transform.position.y + wandTipOnSprite.y;
+            Vector3[] linePoints = new Vector3[] { wandTipPosition, mousePos };
+            targetingLine.SetPositions(linePoints);
         }
-        wandTipPosition.y = transform.position.y + wandTipOnSprite.y;
-        Vector3[] linePoints = new Vector3[] { wandTipPosition, mousePos };
-        targetingLine.SetPositions(linePoints);
     }
 }

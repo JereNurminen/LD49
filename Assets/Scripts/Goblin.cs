@@ -18,6 +18,7 @@ public class Goblin : MonoBehaviour
     private bool seesPlayer = false;
     private bool isPatrolling = true;
     private GameObject player;
+    private PlayerController playerController;
     private Melee melee;
     private List<RaycastHit2D> lastFrameHits = new List<RaycastHit2D>();
     private Vector2 lastPos;
@@ -29,17 +30,15 @@ public class Goblin : MonoBehaviour
     public void OnDrawGizmos() {
         #if UNITY_EDITOR
         Utils.DrawCrossOnPoint(
-            transform.position,
+            patrolStartPos,
             1,
-            Color.green,
-            0.25f
+            Color.green
             );
         Debug.DrawLine((Vector2)transform.position + patrolStartPos, (Vector2)transform.position + patrolEndPos, Color.green);
         Utils.DrawCrossOnPoint(
-            (Vector2)transform.position + patrolEndPos,
+            patrolStartPos + patrolEndPos,
             1,
-            Color.green,
-            0.25f
+            Color.green
             );
         #endif
     }
@@ -50,6 +49,7 @@ public class Goblin : MonoBehaviour
         patrolStartPos = transform.position;
         patrolEndPos = (Vector2)transform.position + patrolEndPos;
         player = GameObject.FindWithTag("Player");
+        playerController = player.GetComponent<PlayerController>();
         melee = GetComponentInChildren<Melee>();
         animator = GetComponent<Animator>();
         InvokeRepeating("CheckSightToPlayer", 1f, .25f);
@@ -78,7 +78,7 @@ public class Goblin : MonoBehaviour
 
     void CheckSightToPlayer()
     {
-        if (alive && !frozen) {
+        if (alive && !frozen && playerController.visible) {
             RaycastHit2D hit = Physics2D.Linecast(transform.position, player.transform.position, layersThatBlockVision);
             Debug.DrawLine(transform.position, player.transform.position, Color.green, .25f);
 
@@ -120,7 +120,11 @@ public class Goblin : MonoBehaviour
                 CheckSightToPlayer();
             }
             Move();
-            if (Vector2.Distance(transform.position, player.transform.position) <= melee.meleeRange) {
+            if (
+                Vector2.Distance(transform.position, player.transform.position) <= melee.meleeRange &&
+                !playerController.dead &&
+                playerController.visible
+            ) {
                 melee.Swing(player.transform.position);
             }
             

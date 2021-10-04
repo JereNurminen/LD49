@@ -2,12 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fireball : MonoBehaviour, IProjectileSpell
+public class Icebolt : MonoBehaviour, IProjectileSpell
 {
-    public Vector2 target { get; set; }
     public PlayerController caster { get; set; }
+
+    private Vector2 _target;
+    public Vector2 target {
+        get { return _target; }
+        set {
+            _target = value;
+            direction = (_target - (Vector2)transform.position).normalized;
+        }
+    }
     public LayerMask layers;
     public int damage;
+    public float freezeDuration;
 
     [SerializeField]
     private float _speed;
@@ -20,7 +29,7 @@ public class Fireball : MonoBehaviour, IProjectileSpell
     // Start is called before the first frame update
     void Start()
     {
-        direction = (target - (Vector2)transform.position).normalized;
+        direction = (_target - (Vector2)transform.position).normalized;
         animator = gameObject.GetComponent<Animator>();
     }
 
@@ -29,10 +38,13 @@ public class Fireball : MonoBehaviour, IProjectileSpell
         direction = Vector2.zero;
         animator.SetTrigger("Hit");
         Health health = hitTarget.GetComponent<Health>();
+        Goblin goblin = hitTarget.GetComponent<Goblin>();
         if (health != null) {
             health.TakeDamage(damage);
         }
-        disabled = true;
+        if (goblin) {
+            goblin.Freeze(freezeDuration);
+        }
     }
 
     public void CheckForHit(Vector2 newPos) {

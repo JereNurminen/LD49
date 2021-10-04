@@ -4068,6 +4068,14 @@ PrefabInstance:
       propertyPath: spells.Array.data[1]
       value: 
       objectReference: {fileID: 6539891208533608653, guid: 3202a042c52cb974394cd6f43f99aa08, type: 3}
+    - target: {fileID: 1078862867793498360, guid: 64bfa3a1ee25b1544970b11c595c8512, type: 3}
+      propertyPath: debugSpells.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1078862867793498360, guid: 64bfa3a1ee25b1544970b11c595c8512, type: 3}
+      propertyPath: debugSpells.Array.data[0]
+      value: 
+      objectReference: {fileID: 384917214645717897, guid: 7686c56e825ff554eb5af92a6fb8faad, type: 3}
     - target: {fileID: 1078862867793498361, guid: 64bfa3a1ee25b1544970b11c595c8512, type: 3}
       propertyPath: m_Name
       value: Player
