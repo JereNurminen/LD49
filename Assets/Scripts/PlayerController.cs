@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[System.Serializable]
+public class Spell
+{
+   public GameObject spell;
+   public Utils.SpellName name;
+}
+
 public class PlayerController : MonoBehaviour
 {
     public Camera mainCamera;
 
     public float moveSpeed;
-    public List<GameObject> spells;
-    public List<GameObject> debugSpells;
+    public List<Spell> spells;
+    public List<Spell> debugSpells;
     public Vector2 wandTipOnSprite;
     public int rayCount;
     public LayerMask wallLayers;
@@ -21,8 +28,10 @@ public class PlayerController : MonoBehaviour
     private LineRenderer targetingLine;
     private Animator animator;
     private Vector2 lastPos;
+    private GameObject nextSpell;
 
     private UIManager uiManager;
+    private HUDManager hudManager;
 
     public bool visible = true;
     public bool invulnerable = false;
@@ -37,7 +46,9 @@ public class PlayerController : MonoBehaviour
         targetingLine = GetComponentInChildren<LineRenderer>();
         animator = GetComponent<Animator>();
         uiManager = GameObject.FindWithTag("UI").GetComponent<UIManager>();
+        hudManager = GameObject.FindWithTag("HUD").GetComponent<HUDManager>();
         Cursor.visible = false;
+        UpdateNextSpell();
     }
 
     public void Die() {
@@ -72,16 +83,22 @@ public class PlayerController : MonoBehaviour
         targetingLine.enabled = true;
     }
 
+    void UpdateNextSpell()
+    {
+        Spell newSpell = debugSpells.Count > 0
+            ? debugSpells[0]
+            : spells[Random.Range(0, spells.Count)];
+        hudManager.SetSpell(newSpell.name);
+        nextSpell = newSpell.spell;
+    }
+
     void CastNextSpell()
     {
         if (!castingDisabled) {
-            GameObject nextSpell = debugSpells.Count > 0
-                ? debugSpells[0]
-                : spells[Random.Range(0, spells.Count)];
             GameObject newSpell = Instantiate(nextSpell, wandTipPosition, Quaternion.identity);
-            Debug.Log($"next spell: {nextSpell.gameObject.name}");
             newSpell.GetComponent<IProjectileSpell>().target = mousePos;
             newSpell.GetComponent<IProjectileSpell>().caster = this;
+            UpdateNextSpell();
         }
     }
 

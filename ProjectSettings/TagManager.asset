@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GameOverFade
   - UI
+  - HUD
   layers:
   - Default
   - TransparentFX

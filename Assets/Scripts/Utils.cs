@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
-static class Utils
+public static class Utils
 {
 
     public enum Axis {
@@ -19,6 +20,13 @@ static class Utils
         Left,
         UpLeft,
         Up,
+    }
+
+    public enum SpellName {
+        Fireball,
+        Icebolt,
+        Blink,
+        Polymorph
     }
 
     public static bool IsLayerInLayerMask(int layer, LayerMask mask) {
