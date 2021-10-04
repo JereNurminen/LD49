@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1078862866203844601}
   - component: {fileID: 1078862866203844600}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TargetLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 665414457
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -151,9 +151,12 @@ GameObject:
   - component: {fileID: 1078862867793498360}
   - component: {fileID: 1078862867793498365}
   - component: {fileID: 1078862867793498364}
-  m_Layer: 0
+  - component: {fileID: 572248535}
+  - component: {fileID: 572248536}
+  - component: {fileID: 572248534}
+  m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -211,7 +214,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -295997249
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 1639214462598301798, guid: cd1ff88ec82ee334a8fb44a84a345c1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -237,12 +240,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  moveSpeed: 48
+  moveSpeed: 64
+  spells:
+  - {fileID: 7634513106589618410, guid: 2298c90176129a24eb774dfddde1a491, type: 3}
+  - {fileID: 6539891208533608653, guid: 3202a042c52cb974394cd6f43f99aa08, type: 3}
+  debugSpells:
+  - {fileID: 384917214645717897, guid: 7686c56e825ff554eb5af92a6fb8faad, type: 3}
   wandTipOnSprite: {x: 6, y: -1}
   rayCount: 4
   wallLayers:
     serializedVersion: 2
     m_Bits: 64
+  visible: 1
+  invulnerable: 0
+  dead: 0
 --- !u!114 &1078862867793498365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,7 +297,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: -2.1488142}
+  m_Offset: {x: 0.5, y: -2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -297,5 +308,74 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 7, y: 9.702372}
+  m_Size: {x: 7, y: 10}
   m_EdgeRadius: 0
+--- !u!50 &572248535
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078862867793498361}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!95 &572248536
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078862867793498361}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f9382917dfd3fbd4e92990f29b3b165f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &572248534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078862867793498361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c583a8b2df2df64c943d1be0e8aa3bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
+  startingHealth: 10
+  OnHealthZero:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1078862867793498360}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Die
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
