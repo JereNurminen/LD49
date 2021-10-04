@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Icebolt : MonoBehaviour
+public class Icebolt : MonoBehaviour, IProjectileSpell
 {
-    public Vector2 target { get; set; }
+    private Vector2 _target;
+    public Vector2 target {
+        get { return _target; }
+        set {
+            _target = value;
+            direction = (_target - (Vector2)transform.position).normalized;
+        }
+    }
     public LayerMask layers;
     public int damage;
     public float freezeDuration;
@@ -20,8 +27,7 @@ public class Icebolt : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        direction = (target - (Vector2)transform.position).normalized;
-        Debug.Log($"{direction}, {target}");
+        direction = (_target - (Vector2)transform.position).normalized;
         animator = gameObject.GetComponent<Animator>();
     }
 
@@ -34,7 +40,9 @@ public class Icebolt : MonoBehaviour
         if (health != null) {
             health.TakeDamage(damage);
         }
-        goblin.Freeze(freezeDuration);
+        if (goblin) {
+            goblin.Freeze(freezeDuration);
+        }
     }
 
     public void CheckForHit(Vector2 newPos) {

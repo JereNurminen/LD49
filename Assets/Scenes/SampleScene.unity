@@ -4063,11 +4063,11 @@ PrefabInstance:
     - target: {fileID: 1078862867793498360, guid: 64bfa3a1ee25b1544970b11c595c8512, type: 3}
       propertyPath: spells.Array.data[0]
       value: 
-      objectReference: {fileID: 6539891208533608653, guid: 3202a042c52cb974394cd6f43f99aa08, type: 3}
+      objectReference: {fileID: 7634513106589618410, guid: 2298c90176129a24eb774dfddde1a491, type: 3}
     - target: {fileID: 1078862867793498360, guid: 64bfa3a1ee25b1544970b11c595c8512, type: 3}
       propertyPath: spells.Array.data[1]
       value: 
-      objectReference: {fileID: 7634513106589618410, guid: 2298c90176129a24eb774dfddde1a491, type: 3}
+      objectReference: {fileID: 6539891208533608653, guid: 3202a042c52cb974394cd6f43f99aa08, type: 3}
     - target: {fileID: 1078862867793498361, guid: 64bfa3a1ee25b1544970b11c595c8512, type: 3}
       propertyPath: m_Name
       value: Player
