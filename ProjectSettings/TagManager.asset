@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - GameOverFade
+  - UI
   layers:
   - Default
   - TransparentFX
@@ -49,6 +51,12 @@ TagManager:
     locked: 0
   - name: Enemies
     uniqueID: 305848625
+    locked: 0
+  - name: UI
+    uniqueID: 32501431
+    locked: 0
+  - name: GameOverFade
+    uniqueID: 883957009
     locked: 0
   - name: Player
     uniqueID: 3998970047

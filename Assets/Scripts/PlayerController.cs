@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public List<GameObject> spells;
     public List<GameObject> debugSpells;
-
     public Vector2 wandTipOnSprite;
     public int rayCount;
     public LayerMask wallLayers;
@@ -22,6 +21,8 @@ public class PlayerController : MonoBehaviour
     private LineRenderer targetingLine;
     private Animator animator;
     private Vector2 lastPos;
+
+    private UIManager uiManager;
 
     public bool visible = true;
     public bool invulnerable = false;
@@ -35,6 +36,7 @@ public class PlayerController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         targetingLine = GetComponentInChildren<LineRenderer>();
         animator = GetComponent<Animator>();
+        uiManager = GameObject.FindWithTag("UI").GetComponent<UIManager>();
         Cursor.visible = false;
     }
 
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("Death");
         targetingLine.enabled = false;
         dead = true;
+        uiManager.GameOver();
     }
 
     public void OnMove(InputValue value)
@@ -84,7 +87,9 @@ public class PlayerController : MonoBehaviour
 
     public void OnFire(InputValue value)
     {
-        CastNextSpell();
+        if (!castingDisabled && !dead) {
+            CastNextSpell();
+        }
     }
 
     void FixedUpdate() {
