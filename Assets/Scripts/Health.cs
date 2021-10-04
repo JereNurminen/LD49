@@ -7,9 +7,9 @@ public class Health : MonoBehaviour
 {
     public int maxHealth;
     public int startingHealth;
+    public int currentHealth;
     public UnityEvent OnHealthZero;
     
-    private int currentHealth;
 
     // Start is called before the first frame update
     void Start()

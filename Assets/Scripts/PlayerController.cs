@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Vector2 lastPos;
     private GameObject nextSpell;
+    private Health health;
 
     private UIManager uiManager;
     private HUDManager hudManager;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         targetingLine = GetComponentInChildren<LineRenderer>();
         animator = GetComponent<Animator>();
+        health = GetComponent<Health>();
         uiManager = GameObject.FindWithTag("UI").GetComponent<UIManager>();
         hudManager = GameObject.FindWithTag("HUD").GetComponent<HUDManager>();
         Cursor.visible = false;
@@ -56,6 +58,7 @@ public class PlayerController : MonoBehaviour
         targetingLine.enabled = false;
         dead = true;
         uiManager.GameOver();
+        hudManager.SetHP(health);
     }
 
     public void OnMove(InputValue value)
@@ -110,8 +113,10 @@ public class PlayerController : MonoBehaviour
     }
 
     void FixedUpdate() {
-        lastPos = transform.position;
-        Utils.Move(gameObject, moveSpeed, wallLayers, movementInput);
+        if (!dead) {
+            lastPos = transform.position;
+            Utils.Move(gameObject, moveSpeed, wallLayers, movementInput);
+        }
     }
 
     // Update is called once per frame
@@ -136,6 +141,8 @@ public class PlayerController : MonoBehaviour
             wandTipPosition.y = transform.position.y + wandTipOnSprite.y;
             Vector3[] linePoints = new Vector3[] { wandTipPosition, mousePos };
             targetingLine.SetPositions(linePoints);
+
+            hudManager.SetHP(health);
         }
     }
 }

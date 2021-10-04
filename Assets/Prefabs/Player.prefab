@@ -69,7 +69,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 665414457
-  m_SortingLayer: 6
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -214,7 +214,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -295997249
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 1639214462598301798, guid: cd1ff88ec82ee334a8fb44a84a345c1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -242,10 +242,13 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   moveSpeed: 64
   spells:
-  - {fileID: 7634513106589618410, guid: 2298c90176129a24eb774dfddde1a491, type: 3}
-  - {fileID: 6539891208533608653, guid: 3202a042c52cb974394cd6f43f99aa08, type: 3}
-  debugSpells:
-  - {fileID: 384917214645717897, guid: 7686c56e825ff554eb5af92a6fb8faad, type: 3}
+  - spell: {fileID: 6539891208533608653, guid: 3202a042c52cb974394cd6f43f99aa08, type: 3}
+    name: 0
+  - spell: {fileID: 7634513106589618410, guid: 2298c90176129a24eb774dfddde1a491, type: 3}
+    name: 1
+  - spell: {fileID: 384917214645717897, guid: 7686c56e825ff554eb5af92a6fb8faad, type: 3}
+    name: 2
+  debugSpells: []
   wandTipOnSprite: {x: 6, y: -1}
   rayCount: 4
   wallLayers:
@@ -362,8 +365,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c583a8b2df2df64c943d1be0e8aa3bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 12
   startingHealth: 10
+  currentHealth: 0
   OnHealthZero:
     m_PersistentCalls:
       m_Calls:
