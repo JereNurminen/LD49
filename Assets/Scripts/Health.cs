@@ -25,6 +25,14 @@ public class Health : MonoBehaviour
         }
     }
 
+    public void Heal(int amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > maxHealth) {
+            currentHealth = maxHealth;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
