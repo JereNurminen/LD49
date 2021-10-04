@@ -49,7 +49,8 @@ public class PlayerController : MonoBehaviour
         health = GetComponent<Health>();
         uiManager = GameObject.FindWithTag("UI").GetComponent<UIManager>();
         hudManager = GameObject.FindWithTag("HUD").GetComponent<HUDManager>();
-        Cursor.visible = false;
+        nextSpell = spells[0].spell;
+        hudManager.SetSpell(spells[0].name);
         UpdateNextSpell();
     }
 
@@ -98,6 +99,7 @@ public class PlayerController : MonoBehaviour
     void CastNextSpell()
     {
         if (!castingDisabled) {
+            Debug.Log(nextSpell);
             GameObject newSpell = Instantiate(nextSpell, wandTipPosition, Quaternion.identity);
             newSpell.GetComponent<IProjectileSpell>().target = mousePos;
             newSpell.GetComponent<IProjectileSpell>().caster = this;

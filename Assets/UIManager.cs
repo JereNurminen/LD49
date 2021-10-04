@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
 {
     public string titleScene;
     public Camera mainCamera;
+    public Texture2D cursor;
+    public Vector2 hotSpot;
 
     Animator animator;
     BoxCollider2D button;
@@ -19,11 +21,13 @@ public class UIManager : MonoBehaviour
     {
         button = GetComponentInChildren<BoxCollider2D>();
         animator = GetComponentInChildren<Animator>();
+        Cursor.SetCursor(cursor, hotSpot, CursorMode.Auto);
     }
 
     public void GameOver() {
         animator.SetTrigger("Game Over");
         active = true;
+        Cursor.SetCursor(null, hotSpot, CursorMode.Auto);
     }
 
     IEnumerator LoadTitleScene(string sceneName)

@@ -45,6 +45,7 @@ public class Icebolt : MonoBehaviour, IProjectileSpell
         if (goblin) {
             goblin.Freeze(freezeDuration);
         }
+        disabled = true;
     }
 
     public void CheckForHit(Vector2 newPos) {

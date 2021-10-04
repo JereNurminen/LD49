@@ -27,12 +27,14 @@ public class HUDManager : MonoBehaviour
     void Start()
     {
         spellDisplay = transform.Find("Spell").GetComponent<Image>();
+        Debug.Log(spellDisplay);
         hpDisplay = transform.Find("HP").GetComponent<Image>();
         hpBarHeight = hpDisplay.rectTransform.sizeDelta.y;
     }
 
     public void SetSpell(Utils.SpellName spellName) {
         foreach(SpellMapping spell in spellMappings) {
+            Debug.Log(spell);
             if (spell.spellName == spellName) {
                 spellDisplay.sprite = spell.icon;
                 spellDisplay.color = Color.white;

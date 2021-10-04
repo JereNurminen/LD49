@@ -40,6 +40,7 @@ public class Polymorph : MonoBehaviour, IProjectileSpell
         if (goblin) {
             goblin.Polymorph();
         }
+        disabled = true;
     }
 
     public void CheckForHit(Vector2 newPos) {
