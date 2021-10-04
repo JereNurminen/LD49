@@ -10,6 +10,8 @@ public class Goblin : MonoBehaviour
     public Vector2 patrolEndPos;
     public LayerMask layersThatBlockVision;
     public LayerMask wallLayers;
+    public float polymorphSpeed;
+    public float polymorphHealth;
 
     private bool isComingBackToStart = false;
     private Vector2 lastSeenPlayerPos;
@@ -24,6 +26,7 @@ public class Goblin : MonoBehaviour
     private Vector2 lastPos;
     private Animator animator;
     private bool frozen;
+    private bool polymorphed;
 
     private bool alive = true;
 
@@ -55,6 +58,11 @@ public class Goblin : MonoBehaviour
         InvokeRepeating("CheckSightToPlayer", 1f, .25f);
     }
 
+    public void Polymorph() {
+        polymorphed = true;
+        animator.SetBool("Polymorphed", true);
+    }
+
     void UnFreeze() {
         frozen = false;
         animator.SetBool("Frozen", false);
@@ -78,7 +86,7 @@ public class Goblin : MonoBehaviour
 
     void CheckSightToPlayer()
     {
-        if (alive && !frozen && playerController.visible) {
+        if (alive && !frozen && !polymorphed && playerController.visible) {
             RaycastHit2D hit = Physics2D.Linecast(transform.position, player.transform.position, layersThatBlockVision);
             Debug.DrawLine(transform.position, player.transform.position, Color.green, .25f);
 
@@ -114,7 +122,7 @@ public class Goblin : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (alive && !frozen) { 
+        if (alive && !frozen && !polymorphed) { 
             animator.SetBool("Walking", true);
             if ( hasSeenPlayer ) {
                 CheckSightToPlayer();
