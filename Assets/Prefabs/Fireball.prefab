@@ -121,7 +121,7 @@ MonoBehaviour:
   layers:
     serializedVersion: 2
     m_Bits: 832
-  damage: 2
+  damage: 3
   _speed: 64
   castSound: {fileID: 8300000, guid: 00fa524a50e04b949bf7912a66b24811, type: 3}
   hitSound: {fileID: 8300000, guid: d2d9788a7b1e0e140bee4f163ad900b0, type: 3}
