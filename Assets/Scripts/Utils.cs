@@ -77,6 +77,11 @@ public static class Utils
         return none;
     }
 
+    /*
+     * This whole thing exists only because I didn't quite understand Unity's collision detection.
+     * The same effect I was going for here could basically be had by using Rigidbodies and setting their
+     * collision detection properly to Continuous or similar.
+     */
     public static List<RaycastHit2D> Move(GameObject objectToMove, float moveSpeed, LayerMask wallLayers, Vector2 move)
     {
         Vector2 oldPos = objectToMove.transform.position;
