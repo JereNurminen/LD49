@@ -251,7 +251,9 @@ MonoBehaviour:
     name: 2
   - spell: {fileID: 5109858286472079679, guid: 48c06448c66409c4a806baff494fa950, type: 3}
     name: 3
-  debugSpells: []
+  debugSpells:
+  - spell: {fileID: 7634513106589618410, guid: 2298c90176129a24eb774dfddde1a491, type: 3}
+    name: 1
   wandTipOnSprite: {x: 6, y: -1}
   rayCount: 4
   wallLayers:
@@ -260,6 +262,7 @@ MonoBehaviour:
   visible: 1
   invulnerable: 0
   dead: 0
+  dieSound: {fileID: 0}
 --- !u!114 &1078862867793498365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,6 +389,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  hurtSound: {fileID: 0}
 --- !u!82 &-1041420652802278534
 AudioSource:
   m_ObjectHideFlags: 0
